@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackie-Chan - GDFactory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        .topbar {
+            background-color: #000;
+            padding: 7px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottombar {
+            background-color: #000;
+            padding: 5px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        a {
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        button {
+            background-color: #222;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        span { font-size: 20px; }
+        hr { border-color:white; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <span>GDFactory</span>
+        <a href="./dashboard.html" style="color:white;font-size:20px;">Dashboard</a>
+    </div>
+    <br>
+    <div class="container">
+        <h1>Jackie-Chan</h1>
+        <hr>
+        <h3>Editor</h3>
+        <form>
+            <textarea cols="120" rows="20" style="background-color:black;color:white;">Once again, WIP</textarea>
+        </form>
+        <h3>Login Information</h3>
+        <form>
+            <label for="un">Username:</label><br>
+            <input type="text" id="un" name="un" maxlength="16" style="background-color:black;color:white;" required><br><br>
+            <label for="pw">Password:</label><br>
+            <input type="text" id="pw" name="pw" maxlength="18" style="background-color:black;color:white;" required><br><br>
+            <button type="submit">Build Runner Executable (WIP)</button><br><br>
+            <button type="submit">Download CBF File (WIP)</button><br><br>
+            <button type="submit">Publish Bot as Template (WIP)</button><br><br>
+            <button type="submit" style="color:red;">Delete Bot (WIP)</button>
+        </form>
+    </div>
+    <div class="bottombar">
+        <h5>GDFactory and cbf are both sevenworks.eu.org services</h5>
+    </div>
+</body>
+</html>
