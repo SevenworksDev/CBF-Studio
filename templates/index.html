@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDFactory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        .topbar {
+            background-color: #000;
+            padding: 7px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottombar {
+            background-color: #000;
+            padding: 5px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        a {
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        span { font-size: 20px; }
+        hr { border-color:white; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <span>GDFactory</span>
+        <a href="{{ url_for('dashboard') }}" style="color:white;font-size:20px;">Dashboard</a>
+    </div>
+    <br>
+    <div class="container">
+        <h1>GDFactory (WIP)</h1>
+        <h6>Ever wanted to build a simple Geometry Dash bot for free without decent knowledge on coding?</h6>
+        <h6>You're in luck!</h6>
+        <hr>
+        <h3>How does it work?</h3>
+        <h6>Using the Dashboard, you can manage all your Geometry Dash bots. To create a new bot, you can click the "Create Bot" button which pops up a form.</h6>
+        <h6>After submitting, you are brought to the Bot Editor where you can edit commands and other information.</h6>
+        <h6 style="color:lightgreen;">Submitting "Bot Account" details is safe and secure and will not be shared to anyone. (these details wont be validated by RobTops servers)</h6>
+        <h6 style="color:red;">DON'T BE STUPID! Your bot account needs to be a fresh account, GDFactory is 100% bannable by Geometry Dash moderation (for some reason)</h6>
+        <hr>
+        <h3>and finally, heres an example of a bot you can create in 60 seconds if you wanted to:</h3>
+        <img src="assets/c1.png" width="850px"><br>
+        <img src="assets/c2.png" width="850px">
+    </div>
+    <div class="bottombar">
+        <h5>GDFactory and cbf are both sevenworks.eu.org services</h5>
+    </div>
+</body>
+</html>

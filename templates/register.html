@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - GDFactory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        .topbar {
+            background-color: #000;
+            padding: 7px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .register {
+            margin-top: 50px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background-color: #1c1c1c;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .bottombar {
+            background-color: #000;
+            padding: 5px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        span { font-size: 20px; }
+        button:hover { background-color: #111; }
+        hr { border-color: white; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <span>GDFactory</span>
+        <a href="{{ url_for('dashboard') }}" style="color:white;font-size:20px;">Dashboard</a>
+    </div>
+
+    <div class="container register">
+        <form action="{{ url_for('register') }}" method="post">
+            <h2 class="text-center">Register</h2>
+            <p style="color:red;">{{ error }}</p>
+            <hr>
+            <div class="form-group">
+                <label for="key">New Key:</label>
+                <input type="text" id="key" name="key" maxlength="20" required>
+            </div>
+            <button type="submit">Register</button>
+            <br><br>
+            <p style="color:red;">Abusing the site will lead to your key being removed and you cannot create new keys, Please have common sense and don't spam my servers.</p>
+        </form>
+    </div>
+
+    <div class="bottombar">
+        <h5>GDFactory and cbf are both sevenworks.eu.org services</h5>
+    </div>
+</body>
+</html>
