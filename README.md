@@ -1,4 +1,5 @@
 # GDFactory (WIP)
+## <a href="./gh-pages-demo">CLICK HERE TO TRY OUT THE DEMO</a>
 ## What is it?
 ```
 a site where you can build Geometry Dash bots without coding knowledge. idk lol
