@@ -46,19 +46,20 @@ def register():
 
 @app.route('/dashboard')
 def dashboard():
-    if 'key' in request.cookies and request.cookies['key'] in valid_keys:
+    if 'key' in request.cookies and request.cookies['key'] in keys:
         cbf = os.path.join(os.path.dirname(__file__), 'secret', 'bots')
-        list = []
-        for keys in os.listdir("secret/bots/"):
-            bots = os.path.join(cbf, keys)
+        bot_list = []
+        for bot_dir in os.listdir("secret/bots/"):
+            bots = os.path.join(cbf, bot_dir)
             if os.path.isdir(bots):
                 for name in os.listdir(bots):
                     bot = os.path.join(bots, name)
                     if os.path.isfile(bot) and name.endswith('.cbf'):
-                        list.append({'name': name[:-4]})
-        return render_template('dashboard.html', list=list)
+                        bot_list.append({'name': name[:-4]})
+        return render_template('dashboard.html', list=bot_list)
     else:
         return redirect(url_for('login'))
+
 
 @app.route('/bots/<string:name>')
 def bots(name):
