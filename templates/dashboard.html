@@ -80,13 +80,23 @@
         <hr style="border-color:white;">
         <h3>Your Bots</h3>
         <div class="list">
-            {% for bot in list %}
+            {% for bot in bots %}
                 <a href="{{ url_for('bots', name=bot['name']) }}" class="square">
                     <img src="assets/robot.png" class="icon">
                     <div class="bot">{{ bot['name'] }}</div>
                 </a>
             {% endfor %}
         </div>
+        <hr>
+        <h3>Templates</h3>
+        <div class="list">
+            {% for template in templates %}
+                <a href="/templates/{{ template.name }}" class="square">
+                    <img src="assets/robot.png" class="icon">
+                    <div class="bot">{{ template.name }}</div>
+                </a>
+            {% endfor %}
+        </div><br><br>
     </div>
     <div class="bottombar">
         <h5>GDFactory and cbf are both sevenworks.eu.org services</h5>

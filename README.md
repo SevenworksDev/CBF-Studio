@@ -6,10 +6,11 @@ a site where you can build Geometry Dash bots without coding knowledge. idk lol
 ```
 ## TODO
 ```
-- Add templates functionality
-- Add /createbot
-- Let users edit bots (change name, delete bot, edit login info, edit cbf, build)
+- Let users change the names of their bots
 - Create pyCBF functionality
+- "Build Runner" functionality
+- "Build Runner (one-file)" functionality
+- Better Templates Page
 ```
 ## Screenshots
 ![image](https://github.com/SevenworksDev/GDFactory/assets/91027492/59ac83ec-1b1f-4934-8327-c16e3c817d3c)
