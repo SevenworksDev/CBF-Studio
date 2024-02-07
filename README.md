@@ -1,16 +1,13 @@
-# GDFactory (WIP)
+# CBF Studio
 ## <a href="./gh-pages-demo">CLICK HERE TO TRY OUT THE DEMO</a>
 ## What is it?
-```
-a site where you can build Geometry Dash bots without coding knowledge. idk lol
-```
+CBF Studio is a site that lets you build powerful Geometry Dash Comment Bots without the intense knowledge of coding.
 ## TODO
 ```
 - Let users change the names of their bots
 - Create pyCBF functionality
 - "Build Runner" functionality
-- "Build Runner (one-file)" functionality
-- Better Templates Page
+- Better Templates Page (Maybe add descriptions and search?)
 ```
 ## Screenshots
 ![image](https://github.com/SevenworksDev/GDFactory/assets/91027492/59ac83ec-1b1f-4934-8327-c16e3c817d3c)

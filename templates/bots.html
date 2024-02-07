@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }} - GDFactory</title>
+    <title>{{ name }} - CBF Studio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
@@ -50,7 +50,7 @@
 </head>
 <body>
     <div class="topbar">
-        <span>GDFactory</span>
+        <span>CBF Studio</span>
         <a href="{{ url_for('dashboard') }}" style="color:white;font-size:20px;">Dashboard</a>
     </div>
     <br>
@@ -61,32 +61,37 @@
         <form id="editor">
             <textarea id="cbf" rows="10" style="width:100%;background-color:black;color:white;">{{ cbf }}</textarea>
             <button type="button" onclick="saveCBF()" style="background-color:black;color:white;">Save</button>
+            <button onclick="window.open('/download/{{ key }}/{{ name }}.cbf')">Download CBF</button><br><br>
         </form>
         <hr>
         <h3>Configuration</h3>
-        <form>
-            <label for="un">Bot Username:</label><br>
-            <input type="text" id="un" name="un" maxlength="16" style="background-color:black;color:white;" required><br><br>
+        <form action="{{ url_for('build', key=key, name=name) }}" method="post">
+            <label for="username">Bot Username:</label><br>
+            <input type="text" id="username" name="username" maxlength="16" style="background-color:black;color:white;" required><br><br>
 
-            <label for="pw">Bot Password:</label><br>
-            <input type="text" id="pw" name="pw" maxlength="18" style="background-color:black;color:white;" required><br><br>
+            <label for="password">Bot Password:</label><br>
+            <input type="text" id="password" name="password" maxlength="18" style="background-color:black;color:white;" required><br><br>
+
+            <label for="levelID">Target LevelID:</label><br>
+            <input type="text" id="levelID" name="levelID" maxlength="14" style="background-color:black;color:white;" required><br><br>
 
             <label for="prefix">Prefix:</label><br>
             <input type="text" id="prefix" name="prefix" maxlength="6" style="background-color:black;color:white;" required><br><br>
 
-            <label for="interval">Check Comments Interval (in seconds) (1.8 reccomended, anything below might get you ratelimited):</label><br>
-            <input type="text" id="interval" name="interval" maxlength="6" style="background-color:black;color:white;" required><br><br>
+            <label for="wait">Checking Interval (in seconds) [1.8+ = Reccomended]:</label><br>
+            <input type="text" id="wait" name="wait" maxlength="6" style="background-color:black;color:white;" required><br><br>
+            <button type="submit">Build</button><br><br>
             <hr>
-            <button type="submit">Build Runner Executable (WIP)</button><br><br>
-            <button onclick="window.location.href='/download/{{ key }}/{{ name }}.cbf'">Download CBF File</button><br><br>
-            <button onclick="window.location.href = 'mailto:mail@sevenworks.eu.org?subject=Request%20GDFactory%20Template&body=Hello%2C%20I%20am%20looking%20forward%20to%20request%20a%20template%20for%20GDFactory.%0A%0AHere%20is%20some%20information%20for%20the%20template%3A%0A%0ABot%20Name%3A%0AFirst%204%20characters%20of%20my%20GDFactory%20Key%20(to%20confirm%20I%20am%20the%20one%20writing%20this%20request)%3A%0A%0ABy%20requesting%20a%20template%2C%20I%20agree%20my%20template%20(Yes%2FNo)%3A%0A%0A-%20Is%20not%20NSFW%20in%20any%20way%3A%0A-%20Stands%20out%20from%20the%20rest%20in%20a%20unique%20way%3A%0A-%20Has%20at%20least%205%20commands%3A%0A-%20Is%20useful%20in%20a%20way%3A%0A-%20Does%20not%20spam%20anything%3A%0A-%20Does%20not%20edit%20settings%2Fregistry%2Ffiles%20unless%20needed%3A%0A-%20Does%20not%20install%2Frun%20malware%20or%20damage%20the%20users%20computer%20in%20some%20way%3A%0A-%20Is%20not%20incredibly%20stupid%3A'">Publish Bot as Template</button><br><br>
+            <h3>Settings</h3>
+            <button onclick="window.location.href = 'mailto:mail@sevenworks.eu.org?subject=Request%20CBF%20Studio%20Template&body=Hello%2C%20I%20am%20looking%20forward%20to%20request%20a%20template%20for%20CBF%20Studio.%0A%0AHere%20is%20some%20information%20for%20the%20template%3A%0A%0ABot%20Name%3A%0AFirst%204%20characters%20of%20my%20CBF%20Studio%20Key%20(to%20confirm%20I%20am%20the%20one%20writing%20this%20request)%3A%0A%0ABy%20requesting%20a%20template%2C%20I%20agree%20my%20template%20(Yes%2FNo)%3A%0A%0A-%20Is%20not%20NSFW%20in%20any%20way%3A%0A-%20Stands%20out%20from%20the%20rest%20in%20a%20unique%20way%3A%0A-%20Has%20at%20least%205%20commands%3A%0A-%20Is%20useful%20in%20a%20way%3A%0A-%20Does%20not%20spam%20anything%3A%0A-%20Does%20not%20edit%20settings%2Fregistry%2Ffiles%20unless%20needed%3A%0A-%20Does%20not%20install%2Frun%20malware%20or%20damage%20the%20users%20computer%20in%20some%20way%3A%0A-%20Is%20not%20incredibly%20stupid%3A'">Publish as Template</button><br><br>
             <button onclick="window.location.href='/deletebot/{{ name }}'" style="color:red;">Delete Bot</button>
         </form><br><br>
     </div>
     <div class="bottombar">
-        <h5>GDFactory and cbf are both sevenworks.eu.org services</h5>
+        <h5>CBF Studio is a sevenworks.eu.org services</h5>
     </div>
     <script>
+        // Make importCBF() maybe?
         function saveCBF() {
             var content = document.getElementById('cbf').value;
 
