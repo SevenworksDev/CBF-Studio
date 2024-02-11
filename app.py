@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, abort, send_file, jsonify
-import os, shutil
+import os, shutil, threading
 from zipfile import ZipFile
 
 app = Flask(__name__, static_url_path='/assets', static_folder='static')
@@ -7,6 +7,8 @@ app = Flask(__name__, static_url_path='/assets', static_folder='static')
 with open("secret/keys.txt", 'r') as file: keys = [line.strip() for line in file]
 def check_key(key): return len(key) == 20 and key.isalnum() and ' ' not in key
 def check_name(name): return name.isalnum() and ' ' not in name
+def clean_tmp(): os.system("python clean.py")
+threading.Thread(target=clean_tmp).start()
 
 def read_cbf(key, name):
     bot = os.path.join('secret', 'bots', key, f'{name}.cbf')
@@ -17,6 +19,15 @@ def read_cbf(key, name):
             tutorial = os.path.join('secret', 'tutorial.txt')
             with open(tutorial, 'r') as t:
                 return t.read()
+        return cbf
+    else:
+        return None
+
+def read_pycbf(key, name):
+    bot = os.path.join('secret', 'bots', key, f'{name}.pycbf')
+    if os.path.exists(bot):
+        with open(bot, 'r') as file:
+            cbf = file.read()
         return cbf
     else:
         return None
@@ -63,13 +74,15 @@ def dashboard():
             for name in os.listdir(bot_dir):
                 if name.endswith('.cbf'):
                     bot_list.append({'name': name[:-4]})
-
+                elif name.endswith('.pycbf'):
+                    bot_list.append({'name': name[:-6]})
+                else:
+                    pass
         template_dir = os.path.join(os.path.dirname(__file__), 'secret', 'templates')
         templates = [{'name': name[:-4]} for name in os.listdir(template_dir) if name.endswith('.cbf')]
         return render_template('dashboard.html', bots=bot_list, templates=templates)
     else:
         return redirect(url_for('login'))
-
 
 @app.route('/createbot', methods=['GET', 'POST'])
 def create_bot():
@@ -78,25 +91,38 @@ def create_bot():
         if key not in keys:
             abort(403)
         botname = request.form['botname']
-        cbf = request.form.get('cbftype', 'cbf')
+        bottype = request.form.get('cbftype', 'cbf')
         if not check_name(botname):
             return render_template('createbot.html', error='Invalid bot name. Bot name must be alphanumeric and not contain spaces.')
         botdir = os.path.join('secret', 'bots', key)
-        botfile = os.path.join(botdir, f'{botname}.cbf')
-        if os.path.isfile(botfile):
+        botfile = os.path.join(botdir, f'{botname}.{bottype}')
+        botext = [f[:-4] for f in os.listdir(os.path.join('secret', 'bots', key)) if f.endswith('.cbf')]
+        if botname in botext:
             return render_template('createbot.html', error='Bot already exists in your key by that name.')
-        with open(botfile, 'a'):
+        if 'cbf' in botext or 'pycbf' in botext:
+            return render_template('createbot.html', error='Bot with the same name already exists under different type.')
+        with open(botfile, 'a') as f:
             pass
+        if bottype == "pycbf":
+            with open(botfile, 'w') as f:
+                f.write("def bot():\n    comment = read()\n    if comment == '/test':\n        reply('It works!', '0')\n    elif comment == '/hello':\n        reply('Hello!', '0')\n    else:\n        pass\n\nwhile True:\n    bot()\n    time.sleep(2)")
         return redirect(url_for('dashboard'))
     return render_template('createbot.html', error=None)
 
 @app.route('/bots/<string:name>')
 def bots(name):
     key = request.cookies.get('key')
-    cbf = read_cbf(key, name)
-    if key not in keys or not os.path.isfile(os.path.join('secret', 'bots', key, f'{name}.cbf')):
+    if key not in keys:
         abort(403)
-    return render_template('bots.html', name=name, key=key, cbf=cbf)
+    if os.path.isfile(os.path.join('secret', 'bots', key, f'{name}.cbf')):
+        bottype = 'cbf'
+        cbf = read_cbf(key, name)
+    elif os.path.isfile(os.path.join('secret', 'bots', key, f'{name}.pycbf')):
+        bottype = 'pycbf'
+        cbf = read_pycbf(key, name)
+    else:
+        abort(404)
+    return render_template('bots.html', name=name, key=key, cbf=cbf, bottype=bottype)
 
 @app.route('/download/<string:key>/<path:file>')
 def download(key, file):
@@ -110,7 +136,12 @@ def download(key, file):
 @app.route('/savebot/<string:name>', methods=['POST'])
 def savebot(name):
     key = request.cookies.get('key')
-    bot = os.path.join('secret', 'bots', key, f'{name}.cbf')
+    if os.path.isfile(os.path.join('secret', 'bots', key, f'{name}.cbf')):
+        bot = os.path.join('secret', 'bots', key, f'{name}.cbf')
+    elif os.path.join('secret', 'bots', key, f'{name}.pycbf'):
+        bot = os.path.join('secret', 'bots', key, f'{name}.pycbf')
+    else:
+        abort(404)
     if key not in keys:
         abort(403)
     try:
@@ -149,7 +180,7 @@ def templates(name):
 
 @app.route('/build/<string:key>/<string:name>', methods=['POST'])
 def build(key, name):
-    a, b, c = os.path.dirname(__file__), os.path.join(os.path.dirname(__file__), 'secret', 'bots'), os.path.join(os.path.dirname(__file__), 'tmp', name)
+    a, b, c = os.path.dirname(__file__), os.path.join(os.path.dirname(__file__), 'secret', 'bots'), os.path.join(os.path.dirname(__file__), 'build', name)
     cbffile = os.path.join(b, key, f'{name}.cbf')
     if not os.path.exists(cbffile):
         return "Bot not found", 404
@@ -164,7 +195,36 @@ def build(key, name):
     conf = "\n".join(f"{field}->{request.form.get(field)}" for field in ['username', 'password', 'levelID', 'prefix', 'wait'])
     with open(os.path.join(c, 'cbf.config'), 'w') as lol:
         lol.write(conf)
-    buildzip = os.path.join(a, 'tmp', f'{name}_build.zip')
+    buildzip = os.path.join(a, 'build', f'{name}_build.zip')
+    zipfolder = f'{name}'
+    with ZipFile(buildzip, 'w') as z:
+        for zfolder, _, zfiles in os.walk(c):
+            for zfile in zfiles:
+                zpath = os.path.join(zfolder, zfile)
+                yooo = os.path.relpath(zpath, c)
+                zipfiles = os.path.join(zipfolder, yooo)
+                z.write(zpath, zipfiles)
+    shutil.rmtree(c)
+    return send_file(buildzip, as_attachment=True, download_name=f'{name}_build.zip')
+
+@app.route('/pybuild/<string:key>/<string:name>', methods=['POST'])
+def pybuild(key, name):
+    a, b, c = os.path.dirname(__file__), os.path.join(os.path.dirname(__file__), 'secret', 'bots'), os.path.join(os.path.dirname(__file__), 'build', name)
+    cbffile = os.path.join(b, key, f'{name}.pycbf')
+    if not os.path.exists(cbffile):
+        return "Bot not found", 404
+    os.makedirs(c, exist_ok=True)
+    runner = ['pycbf.exe', 'run_py.bat']
+    for file in runner:
+        runnerdir, tmpdir = os.path.join(a, 'secret', 'runner', file), os.path.join(c, f'{file}')
+        os.makedirs(os.path.dirname(tmpdir), exist_ok=True)
+        if os.path.exists(runnerdir):
+            shutil.copy(runnerdir, tmpdir)
+    shutil.copy(cbffile, os.path.join(c, 'bot.pycbf'))
+    conf = "\n".join(f"{field}->{request.form.get(field)}" for field in ['username', 'password', 'levelID'])
+    with open(os.path.join(c, 'cbf.config'), 'w') as lol:
+        lol.write(conf)
+    buildzip = os.path.join(a, 'build', f'{name}_build.zip')
     zipfolder = f'{name}'
     with ZipFile(buildzip, 'w') as z:
         for zfolder, _, zfiles in os.walk(c):

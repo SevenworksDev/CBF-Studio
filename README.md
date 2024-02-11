@@ -1,12 +1,10 @@
 # CBF Studio
-## <a href="./gh-pages-demo">CLICK HERE TO TRY OUT THE DEMO</a>
+## <a href="http://cbf.sevenworks.eu.org">http://cbf.sevenworks.eu.org</a>
 ## What is it?
 CBF Studio is a site that lets you build powerful Geometry Dash Comment Bots without the intense knowledge of coding.
 ## TODO
 ```
 - Let users change the names of their bots
-- Create pyCBF functionality
-- "Build Runner" functionality
 - Better Templates Page (Maybe add descriptions and search?)
 ```
 ## Screenshots

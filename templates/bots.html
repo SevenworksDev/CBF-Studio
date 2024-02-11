@@ -65,6 +65,7 @@
         </form>
         <hr>
         <h3>Configuration</h3>
+    {% if bottype == 'cbf' %}
         <form action="{{ url_for('build', key=key, name=name) }}" method="post">
             <label for="username">Bot Username:</label><br>
             <input type="text" id="username" name="username" maxlength="16" style="background-color:black;color:white;" required><br><br>
@@ -86,6 +87,23 @@
             <button onclick="window.location.href = 'mailto:mail@sevenworks.eu.org?subject=Request%20CBF%20Studio%20Template&body=Hello%2C%20I%20am%20looking%20forward%20to%20request%20a%20template%20for%20CBF%20Studio.%0A%0AHere%20is%20some%20information%20for%20the%20template%3A%0A%0ABot%20Name%3A%0AFirst%204%20characters%20of%20my%20CBF%20Studio%20Key%20(to%20confirm%20I%20am%20the%20one%20writing%20this%20request)%3A%0A%0ABy%20requesting%20a%20template%2C%20I%20agree%20my%20template%20(Yes%2FNo)%3A%0A%0A-%20Is%20not%20NSFW%20in%20any%20way%3A%0A-%20Stands%20out%20from%20the%20rest%20in%20a%20unique%20way%3A%0A-%20Has%20at%20least%205%20commands%3A%0A-%20Is%20useful%20in%20a%20way%3A%0A-%20Does%20not%20spam%20anything%3A%0A-%20Does%20not%20edit%20settings%2Fregistry%2Ffiles%20unless%20needed%3A%0A-%20Does%20not%20install%2Frun%20malware%20or%20damage%20the%20users%20computer%20in%20some%20way%3A%0A-%20Is%20not%20incredibly%20stupid%3A'">Publish as Template</button><br><br>
             <button onclick="window.location.href='/deletebot/{{ name }}'" style="color:red;">Delete Bot</button>
         </form><br><br>
+    {% elif bottype == 'pycbf' %}
+        <form action="{{ url_for('pybuild', key=key, name=name) }}" method="post">
+            <label for="username">Bot Username:</label><br>
+            <input type="text" id="username" name="username" maxlength="16" style="background-color:black;color:white;" required><br><br>
+
+            <label for="password">Bot Password:</label><br>
+            <input type="text" id="password" name="password" maxlength="18" style="background-color:black;color:white;" required><br><br>
+
+            <label for="levelID">Target LevelID:</label><br>
+            <input type="text" id="levelID" name="levelID" maxlength="14" style="background-color:black;color:white;" required><br><br>
+            <button type="submit">Build</button><br><br>
+            <hr>
+            <h3>Settings</h3>
+            <button onclick="window.location.href = 'mailto:mail@sevenworks.eu.org?subject=Request%20CBF%20Studio%20Template&body=Hello%2C%20I%20am%20looking%20forward%20to%20request%20a%20template%20for%20CBF%20Studio.%0A%0AHere%20is%20some%20information%20for%20the%20template%3A%0A%0ABot%20Name%3A%0AFirst%204%20characters%20of%20my%20CBF%20Studio%20Key%20(to%20confirm%20I%20am%20the%20one%20writing%20this%20request)%3A%0A%0ABy%20requesting%20a%20template%2C%20I%20agree%20my%20template%20(Yes%2FNo)%3A%0A%0A-%20Is%20not%20NSFW%20in%20any%20way%3A%0A-%20Stands%20out%20from%20the%20rest%20in%20a%20unique%20way%3A%0A-%20Has%20at%20least%205%20commands%3A%0A-%20Is%20useful%20in%20a%20way%3A%0A-%20Does%20not%20spam%20anything%3A%0A-%20Does%20not%20edit%20settings%2Fregistry%2Ffiles%20unless%20needed%3A%0A-%20Does%20not%20install%2Frun%20malware%20or%20damage%20the%20users%20computer%20in%20some%20way%3A%0A-%20Is%20not%20incredibly%20stupid%3A'">Publish as Template</button><br><br>
+            <button onclick="window.location.href='/deletebot/{{ name }}'" style="color:red;">Delete Bot</button>
+        </form><br><br>
+    {% endif %}
     </div>
     <div class="bottombar">
         <h5>CBF Studio is a sevenworks.eu.org services</h5>
